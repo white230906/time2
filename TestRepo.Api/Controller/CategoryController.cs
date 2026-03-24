@@ -19,4 +19,18 @@ public class CategoryController: ControllerBase
         var result = await _service.CreateCategory(category);
         return Ok(result);
     }
+
+    [HttpGet("")]
+    public async Task<IActionResult> GetCategories()
+    {
+        var result = await _service.GetAllCategories();
+        return Ok(result);
+    }
+
+    [HttpGet("{parentId}/children")]
+    public async Task<IActionResult> GetChidenCategories(Guid parentId)
+    {
+        var result = await _service.GetAllChidenCategories(parentId);
+        return Ok(result);
+    }
 }

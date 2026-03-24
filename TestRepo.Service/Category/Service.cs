@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TetPee.Repository;
 
 namespace TetPee.Service.Category;
@@ -22,6 +23,33 @@ public class Service: IService
          return new Response.CategoryResponse()
          {
              Name = category.Name,
+             Id = category.Id,
          };
+    }
+
+    public async Task<List<Response.CategoryResponse>> GetAllCategories()
+    {
+        var query =  _dbContext.Categories.Where(x => true);
+        query = query.OrderBy(x => x.Name);
+        var selectedQuery = query.Select(x => new Response.CategoryResponse()
+        {
+            Name = x.Name,
+            Id = x.Id,
+        });
+        var result = await selectedQuery.ToListAsync();
+        return result;
+    }
+
+    public async Task<List<Response.CategoryResponse>> GetAllChidenCategories(Guid parentId)
+    {
+        var query = _dbContext.Categories.Where(x => x.ParentId == parentId);
+        query = query.OrderBy(x => x.Name);
+        var selectedQuery = query.Select(x => new Response.CategoryResponse()
+        {
+            Name = x.Name,
+            Id = x.Id,
+        });
+        var result = await selectedQuery.ToListAsync();
+        return result;
     }
 }
