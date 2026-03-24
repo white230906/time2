@@ -5,7 +5,7 @@ using TetPee.Repository;
 
 using JwtService = TetPee.Service.JwtService;
 using CategoryService = TetPee.Service.Category;
-    
+using UserService = TetPee.Service.User;    
     
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +29,7 @@ builder.Services.AddSwaggerServices();
 
 builder.Services.AddScoped<CategoryService.IService, CategoryService.Service>();
 builder.Services.AddScoped<JwtService.IService, JwtService.Service>();
+builder.Services.AddScoped<UserService.IService, UserService.Service>();
 
 builder.Services.AddTransient<GlobalExceptionHandlerMiddleware>();
 
