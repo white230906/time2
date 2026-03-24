@@ -16,6 +16,27 @@ public class AppDbContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
+        modelBuilder.Entity<User>(builder =>
+        {
+            builder.HasIndex(x => x.Email)
+                .IsUnique();
+            builder.Property(x => x.Email)
+                .IsRequired()
+                .HasMaxLength(50);
+            builder.Property(x => x.Password)
+                .IsRequired()
+                .HasMaxLength(50);
+            var users = new List<User>()
+            {
+                new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Email = "admin@gmail.com",
+                    Password = "PiedTeam",
+                    Role = "Admin",
+                }
+            };
+            builder.HasData(users);
+        });
     }
 }
