@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TetPee.Repository;
 
 namespace TetPee.Service.User;
@@ -25,5 +26,27 @@ public class Service: IService
         {
             Email = user.Email,
         };
+    }
+
+    public async Task<Response.ChangePasswordResponse> ChangePassword(Request.ChangePasswordRequest requestUser)
+    {
+        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == requestUser.Email);
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+
+        if (user.Password != requestUser.OldPassword)
+        {
+            throw new Exception("Passwords do not match");
+        }
+        user.Password = requestUser.NewPassword;
+         _dbContext.Users.Update(user);
+         await _dbContext.SaveChangesAsync();
+         return new Response.ChangePasswordResponse()
+         {
+             Id = user.Id,
+             NewPassword = requestUser.NewPassword
+         };
     }
 }

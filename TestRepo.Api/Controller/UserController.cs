@@ -21,4 +21,12 @@ public class UserController: ControllerBase
         var newUser = await _userService.CreateUser(userRequest);
         return Ok(newUser);
     }
+
+    [HttpPut("ChangePassword")]
+    public async Task<IActionResult> ChangePassword([FromBody] Request.ChangePasswordRequest changePasswordRequest)
+    {
+        var result = await  _userService.ChangePassword(changePasswordRequest);
+        return Ok(result);
+    }
+    
 }

@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TestRepo.Api.Extensions;
 using TetPee.Repository.Entity;
 using TetPee.Service.Seller;
 
@@ -19,5 +21,12 @@ public class SellerController: ControllerBase
     {
         var newSeller = await _sellerService.CreateSeller(requestSeller);
         return Ok(newSeller);
+    }
+    [Authorize(Policy = JwtExtensions.AdminPolicy)]
+    [HttpGet("")]
+    public async Task<IActionResult> GetSellers(string? searchTerm, int pageIndex = 1, int pageSize = 10)
+    {
+        var result = await _sellerService.GetAllSellers(searchTerm, pageIndex, pageSize);
+        return Ok(result);
     }
 }

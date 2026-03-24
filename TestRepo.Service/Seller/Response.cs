@@ -4,6 +4,6 @@ public class Response
 {
     public class SellerResponse: User.Response.UserResponse
     {
-
+        
     }
 }
